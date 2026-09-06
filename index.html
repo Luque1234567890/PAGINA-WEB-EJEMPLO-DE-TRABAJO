@@ -166,23 +166,32 @@
     .contact .actions .button-lime:hover { filter: brightness(1.08); }
 
     .hero {
-      grid-template-columns: .82fr 1.18fr;
-      gap: 0;
+      display: block;
       min-height: 820px;
       padding: 0;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: var(--navy);
     }
 
-    .hero-copy { padding: 92px max(6vw, 42px); }
+    .hero-carousel,
+    .hero-carousel-track,
+    .hero-slide,
+    .hero-carousel-overlay { position: absolute; inset: 0; }
+    .hero-carousel { z-index: 0; }
+    .hero-slide { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .75s ease; }
+    .hero-slide.is-active { opacity: 1; }
+    .hero-carousel-overlay { background: linear-gradient(90deg, rgba(2, 24, 61, .88) 0%, rgba(2, 24, 61, .70) 42%, rgba(2, 24, 61, .22) 75%, rgba(2, 24, 61, .12) 100%); pointer-events: none; }
+    .hero-copy { position: relative; z-index: 2; min-height: 820px; max-width: 850px; padding: 92px max(6vw, 42px); display: flex; flex-direction: column; justify-content: center; }
     .hero h1 { font-size: clamp(2.45rem, 3.85vw, 4.9rem); max-width: 640px; }
-    ..hero-media { height: 820px; max-width: none; }
-    .hero-media img {
-      width: 100%;
-      height: 100%;
-      border-radius: 0;
-      object-fit: cover;
-      object-position: center;
-      opacity: 1;
-    }
+    .hero-carousel-control { position: absolute; z-index: 3; top: 50%; width: 48px; height: 48px; border: 1px solid rgba(255,255,255,.78); border-radius: 50%; background: rgba(3, 29, 72, .55); color: #fff; font-size: 2rem; line-height: 1; display: grid; place-items: center; cursor: pointer; transition: background .2s, transform .2s; }
+    .hero-carousel-control:hover, .hero-carousel-control:focus-visible { background: rgba(6, 87, 189, .92); transform: scale(1.07); outline: 3px solid var(--lime); outline-offset: 3px; }
+    .hero-carousel-prev { left: 26px; }
+    .hero-carousel-next { right: 26px; }
+    .hero-carousel-dots { position: absolute; z-index: 3; left: 50%; bottom: 28px; transform: translateX(-50%); display: flex; gap: 10px; }
+    .hero-carousel-dot { width: 11px; height: 11px; padding: 0; border: 1px solid #fff; border-radius: 50%; background: rgba(255,255,255,.35); cursor: pointer; transition: transform .2s, background .2s; }
+    .hero-carousel-dot.is-active { background: var(--lime); border-color: var(--lime); transform: scale(1.25); }
 
     .contact > img {
       object-position: center;
@@ -233,11 +242,10 @@
         box-shadow: 0 12px 24px rgba(4, 29, 72, .16);
       }
       .header nav.open a { width: 100%; padding: 15px 18px; }
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-copy { padding: 72px max(7vw, 34px); }
+      .hero { min-height: 650px; }
+      .hero-copy { min-height: 650px; padding: 72px max(7vw, 34px); }
       .hero h1 { font-size: clamp(3.1rem, 8vw, 5.4rem); }
-      .hero-media { height: min(68vw, 540px); }
-      .hero-card { left: 28px; bottom: 20px; }
+      .hero-carousel-overlay { background: linear-gradient(90deg, rgba(2, 24, 61, .88), rgba(2, 24, 61, .52)); }
       .trust { gap: 18px 34px; justify-content: flex-start; flex-wrap: wrap; }
       .section-heading { align-items: flex-start; }
     }
@@ -250,10 +258,15 @@
       .brand img { width: 54px; height: 54px; }
       .header-cta { padding: 14px 18px; font-size: .84rem; }
       .header nav a { padding: 11px 14px; }
-      .hero-copy { padding: 68px 22px; }
-      .hero h1 { font-size: clamp(2.7rem, 13vw, 4.3rem); }
-      .hero-media { height: 360px; }
-      .hero-card { left: 18px; bottom: 16px; padding: 13px 16px; }
+      .hero { min-height: 680px; }
+      .hero-copy { min-height: 680px; padding: 54px 22px 100px; }
+      .hero h1 { font-size: clamp(2.1rem, 10vw, 3rem); }
+      .hero .lead { font-size: 1rem; }
+      .hero-copy > p:not(.eyebrow):not(.lead) { font-size: .9rem; }
+      .hero-carousel-control { top: auto; bottom: 20px; width: 42px; height: 42px; font-size: 1.7rem; }
+      .hero-carousel-prev { left: 22px; }
+      .hero-carousel-next { right: 22px; }
+      .hero-carousel-dots { bottom: 36px; gap: 8px; }
       .header nav.open { top: 84px; padding-inline: 18px; }
       .section-heading { display: block; }
       .whatsapp { width: auto; height: auto; padding: 16px 18px; font-size: .82rem; }
@@ -263,7 +276,28 @@
 <body>
   <header class="header"><a class="brand" href="#inicio"><img src="azsa-logo.png" alt="Logo AZTECA SERVICIOS AMBIENTALES SAC"><span>AZTECA <small>SERVICIOS AMBIENTALES SAC</small></span></a><button class="menu-toggle" aria-label="Abrir menú">☰</button><nav><a href="#nosotros">Nosotros</a><a href="#servicios">Servicios</a><a href="#minam">MINAM</a><a href="#recicladores">Recicladores</a><a href="#blog">Blog</a></nav><a class="button button-light header-cta" target="_blank" href="https://wa.me/51970526539?text=Hola%20AZTECA%20SERVICIOS%20AMBIENTALES%20SAC%2C%20deseo%20realizar%20una%20consulta%20sobre%20sus%20servicios%20ambientales.">Consultar por WhatsApp</a></header>
   <main>
-    <section id="inicio" class="hero"><div class="hero-copy"><p class="eyebrow">Gestión ambiental responsable</p><h1>TRANSFORMAMOS RESIDUOS EN <em>OPORTUNIDADES PARA UN FUTURO SOSTENIBLE</em></h1><p class="lead">Gestión responsable de residuos sólidos y asesoría ambiental para empresas, recicladores y personas naturales.</p><p>Te acompañamos en trámites ante MINAM, autorizaciones y obligaciones relacionadas con residuos sólidos.</p><div class="actions"><button class="button button-accent open-modal">Solicitar asesoría</button><a class="button button-outline" href="https://wa.me/51970526539" target="_blank">WhatsApp ↗</a></div><div class="hero-pills"><span>EO-RS</span><span>SIGERSOL</span><span>Trámites MINAM</span></div></div><div class="hero-media"><img src="images (2).jpg" alt="Profesional de AZTECA SERVICIOS AMBIENTALES SAC brindando asesoría ambiental"><div class="hero-card"><b>Asesoría técnica</b><span>Para decisiones ambientales claras.</span></div></div></section>
+    <section id="inicio" class="hero">
+      <div class="hero-carousel" aria-label="Galería de servicios ambientales">
+        <div class="hero-carousel-track">
+          <img class="hero-slide is-active" src="hero-azsa.jpg" alt="Asesora de AZTECA SERVICIOS AMBIENTALES SAC en oficina">
+          <img class="hero-slide" src="carrusel-2.jpg" alt="Gestión responsable de residuos de cobre">
+          <img class="hero-slide" src="carrusel-3.jpg" alt="Planta de valorización de residuos sólidos">
+          <img class="hero-slide" src="carrusel-4.jpg" alt="Orientación para trámites ambientales ante MINAM">
+          <img class="hero-slide" src="carrusel-5.jpg" alt="Valorización y exportación de chatarra metálica">
+        </div>
+        <div class="hero-carousel-overlay" aria-hidden="true"></div>
+        <button class="hero-carousel-control hero-carousel-prev" type="button" aria-label="Imagen anterior">‹</button>
+        <button class="hero-carousel-control hero-carousel-next" type="button" aria-label="Imagen siguiente">›</button>
+        <div class="hero-carousel-dots" role="tablist" aria-label="Seleccionar imagen de la carátula">
+          <button class="hero-carousel-dot is-active" type="button" role="tab" aria-label="Mostrar imagen 1" aria-selected="true"></button>
+          <button class="hero-carousel-dot" type="button" role="tab" aria-label="Mostrar imagen 2" aria-selected="false"></button>
+          <button class="hero-carousel-dot" type="button" role="tab" aria-label="Mostrar imagen 3" aria-selected="false"></button>
+          <button class="hero-carousel-dot" type="button" role="tab" aria-label="Mostrar imagen 4" aria-selected="false"></button>
+          <button class="hero-carousel-dot" type="button" role="tab" aria-label="Mostrar imagen 5" aria-selected="false"></button>
+        </div>
+      </div>
+      <div class="hero-copy"><p class="eyebrow">Gestión ambiental responsable</p><h1>TRANSFORMAMOS RESIDUOS EN <em>OPORTUNIDADES PARA UN FUTURO SOSTENIBLE</em></h1><p class="lead">Gestión responsable de residuos sólidos y asesoría ambiental para empresas, recicladores y personas naturales.</p><p>Te acompañamos en trámites ante MINAM, autorizaciones y obligaciones relacionadas con residuos sólidos.</p><div class="actions"><button class="button button-accent open-modal">Solicitar asesoría</button><a class="button button-outline" href="https://wa.me/51970526539" target="_blank">WhatsApp ↗</a></div><div class="hero-pills"><span>EO-RS</span><span>SIGERSOL</span><span>Trámites MINAM</span></div></div>
+    </section>
     <section class="trust"><div><strong>Gestión</strong><span>ordenada y responsable</span></div><div><strong>Atención</strong><span>personalizada para cada caso</span></div><div><strong>Perú</strong><span>orientación ambiental confiable</span></div></section>
     <section id="nosotros" class="section split"><div class="image-frame"><img src="images (1).jpg" alt="Innovación y sostenibilidad ambiental"></div><div><p class="eyebrow blue">Conoce AZTECA SERVICIOS AMBIENTALES SAC</p><h2>QUIÉNES SOMOS</h2><p>AZTECA SERVICIOS AMBIENTALES SAC es una empresa peruana orientada a brindar soluciones y asesoría especializada en gestión de residuos sólidos y servicios ambientales.</p><p>Ayudamos a empresas, organizaciones, recicladores y personas naturales a desarrollar sus actividades de manera responsable, ordenada y conforme a las obligaciones ambientales aplicables.</p><a class="text-link open-modal" href="#contacto">Conversemos sobre tu caso <b>→</b></a></div></section>
     <section id="servicios" class="section soft"><div class="section-heading"><div><p class="eyebrow blue">Soluciones a tu medida</p><h2>NUESTROS SERVICIOS</h2></div><p>Orientación técnica y documental para que avances con seguridad en cada proceso.</p></div><div class="service-grid">
