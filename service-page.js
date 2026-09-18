@@ -3,7 +3,7 @@ const siteNav=document.querySelector('.header nav');
 if(menuToggle&&siteNav){menuToggle.addEventListener('click',()=>siteNav.classList.toggle('open'));}
 
 (() => {
-  const siteUrl = 'https://tramites-minam-azsa.vercel.app';
+  const siteUrl = 'https://azsa.pe';
   const pageUrl = `${siteUrl}${location.pathname}`;
   const title = document.title;
   const description = document.querySelector('meta[name="description"]')?.content || '';

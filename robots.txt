@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tramites-minam-azsa.vercel.app/sitemap.xml
+Sitemap: https://azsa.pe/sitemap.xml
